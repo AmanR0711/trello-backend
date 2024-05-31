@@ -57,12 +57,13 @@ export class UsersController {
 
   // Updates a T.R.E.L.L.O User having a specific username
   // Effectively, a route to handle user preferences
-  @Patch(':username')
-  update(
+  @Patch('update/:username')
+  async update(
     @Param('username') username: string,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
   ) {
-    // return this.usersService.update(+username, updateUserDto);
+    const res = await this.usersService.update(username, updateUserDto);
+    return { message: 'User updated successfully', data: res };
   }
 
   // Danger zone:
@@ -71,8 +72,10 @@ export class UsersController {
   @Delete('delete/:username')
   async remove(@Param('username') username: string) {
     const res = await this.usersService.remove(username);
-    if(res.affected === 0) {
-      throw new NotFoundException({ message: `User with username ${username} not found` });
+    if (res.affected === 0) {
+      throw new NotFoundException({
+        message: `User with username ${username} not found`,
+      });
     } else {
       return { message: 'User deleted successfully' };
     }

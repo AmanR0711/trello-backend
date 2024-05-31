@@ -38,7 +38,12 @@ export class UsersService {
     if(!validUser) {
       throw new NotFoundException(`User with username "${username}" not found`);
     } else {
-      return await this.userRepository.update(username, updateUserDto);
+      await this.userRepository.update(username, updateUserDto);
+      // edge case: username is updated:
+      if(updateUserDto.username) {
+        return await this.userRepository.findOne({ where: { username: updateUserDto.username } });
+      }
+      return await this.userRepository.findOne({ where: { username } });
     }
   }
 
