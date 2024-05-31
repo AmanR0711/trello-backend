@@ -70,7 +70,7 @@ export class UsersController {
   // all associated boards and lists are deleted
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 
   // Profile picture uploader
@@ -112,6 +112,9 @@ export class UsersController {
     if (!validUsername) {
       throw new NotFoundException({ message: 'Invalid username' });
     } else {
+      await this.usersService.update(username, {
+        avatarUrl: `${this.configService.get<string>('SERVER_URL')}/public/avatars/${avatar.filename}`,
+      });
       return this.usersService.uploadAvatar(avatar);
     }
   }
