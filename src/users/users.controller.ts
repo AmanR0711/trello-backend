@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+
 import { UsersService } from './users.service';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { TrelloTheme } from './entities/user.entity';
 
 // Responsible for T.R.E.L.L.O User CRUD operations
 @Controller('users')
@@ -10,7 +13,17 @@ export class UsersController {
 
   // Creates a new T.R.E.L.L.O User
   @Post('create')
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+    // if theme is null -> set to Light
+    if (!createUserDto.theme) {
+      createUserDto.theme = TrelloTheme.light;
+    }
+
+    // if no avatarUrl -> set to default
+    if (!createUserDto.avatarUrl) {
+      createUserDto.avatarUrl = "https://i.sstatic.net/l60Hf.png";
+    }
+    
     return this.usersService.create(createUserDto);
   }
 
