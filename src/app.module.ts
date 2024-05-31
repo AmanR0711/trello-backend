@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -23,6 +26,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: true,
       }),
     }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '../public/'),
+
+    // }),
     UsersModule,
   ],
   controllers: [AppController],
