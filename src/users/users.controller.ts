@@ -68,9 +68,14 @@ export class UsersController {
   // Danger zone:
   // If a T.R.E.L.L.O User is deleted,
   // all associated boards and lists are deleted
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @Delete('delete/:username')
+  async remove(@Param('username') username: string) {
+    const res = await this.usersService.remove(username);
+    if(res.affected === 0) {
+      throw new NotFoundException({ message: `User with username ${username} not found` });
+    } else {
+      return { message: 'User deleted successfully' };
+    }
   }
 
   // Profile picture uploader

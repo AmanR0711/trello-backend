@@ -42,8 +42,8 @@ export class UsersService {
     }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(username: string) {
+    return await this.userRepository.delete(username);
   }
 
   // Profile picture uploader
