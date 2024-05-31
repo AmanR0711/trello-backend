@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseInterceptors, UploadedFile, ParseFilePipeBuilder, HttpStatus, Query, NotFoundException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { UsersService } from './users.service';
@@ -60,8 +60,6 @@ export class UsersController {
         if (!req.query.username) {
           callback(new Error("Username is required"), "");
         } else {
-          console.log(req.query);
-          console.log(file);
           // Filename: username + file extension
           // e.g. 'john_doe.png'
           const filename: string = `${req.query.username}.${file.originalname.split('.').pop()}`;
@@ -70,7 +68,7 @@ export class UsersController {
       }
     }),
   }))
-  uploadAvatar(@UploadedFile(
+  async uploadAvatar(@UploadedFile(
     // Max file size: 5MB,
     // Allowed file types: JPEG, JPG, PNG
     new ParseFilePipeBuilder()
@@ -78,7 +76,12 @@ export class UsersController {
       .addMaxSizeValidator({ maxSize: 5 * 1024 * 1024 })
       .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY })
 
-  ) avatar: Express.Multer.File) {
-    return this.usersService.uploadAvatar(avatar);
+  ) avatar: Express.Multer.File, @Query('username') username: string,) {
+    const validUsername = await this.usersService.findOne(username);
+    if (!validUsername) {
+      throw new NotFoundException({ message: "Invalid username" });
+    } else {
+      return this.usersService.uploadAvatar(avatar);
+    }
   }
 }

@@ -28,8 +28,8 @@ export class UsersService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(username: string) {
+    return await this.userRepository.findOne({ where: { username } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -42,6 +42,9 @@ export class UsersService {
 
   // Profile picture uploader
   uploadAvatar(avatar: Express.Multer.File) {
-    console.log(avatar);
+    return {
+      fileName: avatar.filename,
+      message: "User avatar saved successfully",
+    }
   }
 }
