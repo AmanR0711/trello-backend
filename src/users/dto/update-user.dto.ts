@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+// Represents any of the fields a TrelloUser may update
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+import { TrelloTheme } from "../entities/user.entity";
+
+// No email field, as it is not updatable (Google OAuth)
+export class UpdateUserDto {
+    username?: string;
+    avatarUrl?: string;
+    theme?: TrelloTheme;
+}
