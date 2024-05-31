@@ -23,6 +23,7 @@ export class UsersService {
         return user;
       }
     } catch (e) {
+      console.log(e);
       // Duplicate username 
       throw new ConflictException(`Username "${createUserDto.username}" is already being used`);
     }

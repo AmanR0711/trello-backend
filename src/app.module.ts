@@ -26,10 +26,12 @@ import { join } from 'path';
         synchronize: true,
       }),
     }),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '../public/'),
-
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../public/'),
+      exclude: ['/api*'],
+      renderPath: '/public',
+      serveRoot: '/public',
+    }),
     UsersModule,
   ],
   controllers: [AppController],
