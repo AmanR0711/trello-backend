@@ -34,16 +34,16 @@ export class UsersService {
   }
 
   async update(username: string, updateUserDto: UpdateUserDto) {
-    const validUser = this.userRepository.findOne({ where: { username } });
+    const validUser = this.findOne(username);
     if(!validUser) {
       throw new NotFoundException(`User with username "${username}" not found`);
     } else {
       await this.userRepository.update(username, updateUserDto);
       // edge case: username is updated:
       if(updateUserDto.username) {
-        return await this.userRepository.findOne({ where: { username: updateUserDto.username } });
+        return this.findOne(updateUserDto.username);
       }
-      return await this.userRepository.findOne({ where: { username } });
+      return this.findOne(username);
     }
   }
 
