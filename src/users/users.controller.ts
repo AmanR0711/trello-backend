@@ -48,11 +48,11 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  // Retrieves a T.R.E.L.L.O User having a specific username
-  // Each T.R.E.L.L.O User has a unique username
-  @Get(':username')
-  findOne(@Param('username') id: string) {
-    // return this.usersService.findOne(+id);
+  // Retrieves a T.R.E.L.L.O User having a specific email
+  // Each T.R.E.L.L.O User has a unique email
+  @Get(':email')
+  findOne(@Param('email') email: string) {
+    return this.usersService.findOneByEmail(email);
   }
 
   // Updates a T.R.E.L.L.O User having a specific username
