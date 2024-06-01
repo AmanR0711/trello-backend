@@ -1,0 +1,65 @@
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { TrelloUser } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+@Injectable()
+export class UsersService {
+
+  // Inject UserRepository (courtesy TypeORM)
+  constructor(
+    @InjectRepository(TrelloUser)
+    private readonly userRepository: Repository<TrelloUser>
+  ) { }
+
+  async create(createUserDto: CreateUserDto): Promise<TrelloUser> {
+    try {
+      const user: TrelloUser = this.userRepository.create(createUserDto);
+      const result = await this.userRepository.insert(createUserDto);
+      if (result.identifiers.length > 0) {
+        return user;
+      }
+    } catch (e) {
+      console.log(e);
+      // Duplicate username 
+      throw new ConflictException(`Username "${createUserDto.username}" is already being used`);
+    }
+  }
+
+  async findOne(username: string) {
+    return await this.userRepository.findOne({ where: { username } });
+  }
+
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
+  async update(username: string, updateUserDto: UpdateUserDto) {
+    const validUser = this.findOne(username);
+    if(!validUser) {
+      throw new NotFoundException(`User with username "${username}" not found`);
+    } else {
+      await this.userRepository.update(username, updateUserDto);
+      // edge case: username is updated:
+      if(updateUserDto.username) {
+        return this.findOne(updateUserDto.username);
+      }
+      return this.findOne(username);
+    }
+  }
+
+  async remove(username: string) {
+    return await this.userRepository.delete(username);
+  }
+
+  // Profile picture uploader
+  uploadAvatar(avatar: Express.Multer.File) {
+    return {
+      fileName: avatar.filename,
+      message: "User avatar saved successfully",
+    }
+  }
+}
