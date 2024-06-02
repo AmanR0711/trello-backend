@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, Generated, ManyToOne, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToOne, UpdateDateColumn } from "typeorm";
 
 import { TrelloUser } from "src/users/entities/user.entity";
 
