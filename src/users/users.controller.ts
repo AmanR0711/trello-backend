@@ -34,7 +34,7 @@ export class UsersController {
 
   // Creates a new T.R.E.L.L.O User
   @Post('create')
-  create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+  async create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     // if theme is null -> set to Light
     if (!createUserDto.theme) {
       createUserDto.theme = TrelloTheme.light;
@@ -45,7 +45,7 @@ export class UsersController {
       createUserDto.avatarUrl = `${this.configService.get<string>('SERVER_URL')}/public/avatar/default.jpg`;
     }
 
-    return this.usersService.create(createUserDto);
+    return await this.usersService.create(createUserDto);
   }
 
   // Retrieves a T.R.E.L.L.O User having a specific email

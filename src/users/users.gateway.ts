@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 import { UsersGatewayDto } from './dto/users-gateway.dto';
 
 // To check if username is unique
-@WebSocketGateway(4890, { namespace: 'users', cors: { origin: '*' } })
+@WebSocketGateway({ namespace: 'users', cors: { origin: '*' } })
 export class UsersGateway {
   @WebSocketServer()
   private wsServer: Server;
