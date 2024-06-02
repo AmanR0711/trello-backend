@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { join } from 'path';
+import { BoardsModule } from './boards/boards.module';
+import { BoardsModule } from './boards/boards.module';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { join } from 'path';
       serveRoot: '/public',
     }),
     UsersModule,
+    BoardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
