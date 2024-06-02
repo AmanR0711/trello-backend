@@ -9,7 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { join } from 'path';
 import { BoardsModule } from './boards/boards.module';
-import { BoardsModule } from './boards/boards.module';
 
 @Module({
   imports: [

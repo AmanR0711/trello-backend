@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import { TrelloBoard } from "src/boards/entities/board.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, UpdateDateColumn } from "typeorm";
 
 // Enum for the theme of the Trello user
 // The theme can be either 'Light' or 'Dark'
@@ -26,4 +27,9 @@ export class TrelloUser {
 
     @Column()
     theme: TrelloTheme;
+
+    // The user can have multiple boards
+    // This is a one-to-many relationship
+    @OneToMany(() => TrelloBoard, board => board.creator)
+    boards: string[];
 }
