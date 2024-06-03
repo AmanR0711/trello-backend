@@ -10,5 +10,6 @@ import { UsersGateway } from './users.gateway';
   imports: [TypeOrmModule.forFeature([TrelloUser])],
   controllers: [UsersController],
   providers: [UsersService, UsersGateway],
+  exports: [UsersService],
 })
 export class UsersModule {}

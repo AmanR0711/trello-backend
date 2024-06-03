@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { TrelloUser } from "src/users/entities/user.entity";
 import { TrelloBoard } from "./board.entity";
@@ -17,7 +17,10 @@ export enum TrelloBoardScope {
 
 @Entity()
 export class TrelloBoardScopes {
-    @Column({ primary: true, unique: true })
+
+    @PrimaryGeneratedColumn('increment')
+    id: number;
+
     @OneToOne(() => TrelloBoard, board => board.id)
     boardId: string;
 
@@ -25,6 +28,10 @@ export class TrelloBoardScopes {
     scope: TrelloBoardScope;
 
     // Which user this scope belongs to
+    @Column()
     @OneToOne(() => TrelloUser, user => user.username)
     username: string;
+
+    @ManyToOne(() => TrelloBoard, board => board.id, { onDelete: "CASCADE" })
+    board: TrelloBoard;
 }
