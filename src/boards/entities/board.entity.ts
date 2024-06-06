@@ -5,11 +5,11 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { TrelloUser } from 'src/users/entities/user.entity';
 import { TrelloBoardScopes } from './scopes.entity';
+import { TrelloList } from 'src/lists/entities/list.entity';
 
 // Enum for board background color
 // From MaterialColors.primaries (Flutter)
@@ -68,4 +68,8 @@ export class TrelloBoard {
 
   @OneToMany((type) => TrelloBoardScopes, (scope) => scope.board)
   scopes: TrelloBoardScopes[];
+
+  // A board can have many lists
+  @OneToMany(() => TrelloList, (list) => list.board, { eager: true })
+  lists: TrelloList[];
 }
