@@ -1,6 +1,6 @@
 import { TrelloBoard } from "src/boards/entities/board.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TrelloListScopes } from "./scope.entity";
+import { TrelloListScopes } from "./scopes.entity";
 
 // A List of Tasks in a Trello Board
 @Entity()

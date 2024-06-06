@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TrelloList } from "./list.entity";
 import { TrelloUser } from "src/users/entities/user.entity";
-import { TrelloBoard } from "src/boards/entities/board.entity";
 
 export enum TrelloListScope {
     READ_ONLY = 'Read Only',
