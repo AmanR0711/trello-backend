@@ -43,6 +43,7 @@ export class BoardsController {
 
   @Post(':id')
   async updateScope(@Param('id') id: string, @Body(ValidationPipe) updateScopeDto: UpdateScopeDto) {
-    return await this.boardsService.updateScopes(id, updateScopeDto);
+    await this.boardsService.updateScopes(id, updateScopeDto);
+    return { message: 'Scope updated successfully' };
   }
 }

@@ -32,6 +32,8 @@ export class BoardsService {
     const res = await this.boardRepository.create({
       name: createBoardDto.name,
       creator: user,
+      bgColor: createBoardDto.bgColor,
+      description: createBoardDto.description,
     });
     await this.boardRepository.save(res);
     // Create a private scope for the board by default
@@ -56,10 +58,15 @@ export class BoardsService {
   }
 
   async findOne(id: string) {
-    const res = await this.boardRepository.find({
+    const res = await this.boardRepository.findOne({
       where: { id: id },
       relations: { creator: true, scopes: true },
     });
+
+    // Invalid board id
+    if (!res) {
+      throw new NotFoundException('Board with this ID not found');
+    }
     return res;
   }
 
@@ -73,24 +80,30 @@ export class BoardsService {
   }
 
   async updateScopes(id: string, updateScopeDto: UpdateScopeDto) {
-    if(updateScopeDto.scope == TrelloBoardScope.noaccess) {
+    // find board
+    const board = await this.findOne(id);
+    if (!board) {
+      throw new NotFoundException('Board with this ID not found');
+    }
+
+    if (updateScopeDto.scope == TrelloBoardScope.noaccess) {
       // Remove the scope
+      console.log('Deleting scope');
       await this.boardScopesRepository.delete({
         board: { id },
         username: updateScopeDto.username,
       });
-      return await this.findOne(id);
+      return;
     }
 
     const res = await this.boardScopesRepository.find({
       where: { board: { id: id }, username: updateScopeDto.username },
     });
-    console.log(res);
     if (res.length == 0) {
       // New scope
       const newScope = await this.boardScopesRepository.create({
         ...updateScopeDto,
-        board: { id }
+        board: { id },
       });
       await this.boardScopesRepository.save(newScope);
     } else {
@@ -100,6 +113,5 @@ export class BoardsService {
         scope: updateScopeDto.scope,
       });
     }
-    return await this.findOne(id);
   }
 }

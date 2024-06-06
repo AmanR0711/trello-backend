@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+
+import { TrelloBoardBackgroundColor } from "../entities/board.entity";
 
 export class CreateBoardDto {
     @IsString()
@@ -8,4 +10,9 @@ export class CreateBoardDto {
     @IsString()
     @IsNotEmpty()
     username: string; // The username of the user who created the board
+
+    description: string; // Description of the board
+
+    @IsEnum(TrelloBoardBackgroundColor)
+    bgColor: TrelloBoardBackgroundColor; // Board background color
 }
