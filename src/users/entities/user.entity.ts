@@ -30,6 +30,6 @@ export class TrelloUser {
 
     // The user can have multiple boards
     // This is a one-to-many relationship
-    @OneToMany(() => TrelloBoard, board => board.creator)
+    @OneToMany(() => TrelloBoard, board => board.creator, { cascade: true })
     boards: string[];
 }

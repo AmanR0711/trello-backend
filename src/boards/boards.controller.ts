@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, Query } from '@nestjs/common';
 
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -11,14 +11,16 @@ import { UpdateScopeDto } from './dto/update-scope.dto';
 export class BoardsController {
   constructor(private readonly boardsService: BoardsService) {}
 
+  
+  @Get()
+  async findAll(@Query('username') body: RetrieveAllBoardsDto) {
+    console.log(body);
+    return await this.boardsService.findAll(body.username);
+  }
+  
   @Post('create')
   async create(@Body(ValidationPipe) createBoardDto: CreateBoardDto) {
     return await this.boardsService.create(createBoardDto);
-  }
-
-  @Get()
-  async findAll(@Body(ValidationPipe) body: RetrieveAllBoardsDto) {
-    return await this.boardsService.findAll(body.username);
   }
 
   @Get(':id')

@@ -57,12 +57,12 @@ export class UsersController {
 
   // Updates a T.R.E.L.L.O User having a specific username
   // Effectively, a route to handle user preferences
-  @Patch('update/:username')
+  @Patch('update/:email')
   async update(
-    @Param('username') username: string,
+    @Param('email') email: string,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
   ) {
-    const res = await this.usersService.update(username, updateUserDto);
+    const res = await this.usersService.update(email, updateUserDto);
     return { message: 'User updated successfully', data: res };
   }
 

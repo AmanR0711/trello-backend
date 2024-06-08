@@ -37,17 +37,13 @@ export class UsersService {
     return await this.userRepository.findOne({ where: { email } });
   }
 
-  async update(username: string, updateUserDto: UpdateUserDto) {
-    const validUser = this.findOne(username);
+  async update(email: string, updateUserDto: UpdateUserDto) {
+    const validUser = await this.findOneByEmail(email);
     if(!validUser) {
-      throw new NotFoundException(`User with username "${username}" not found`);
+      throw new NotFoundException(`User with email "${email}" not found`);
     } else {
-      await this.userRepository.update(username, updateUserDto);
-      // edge case: username is updated:
-      if(updateUserDto.username) {
-        return this.findOne(updateUserDto.username);
-      }
-      return this.findOne(username);
+      await this.userRepository.update(validUser.username, updateUserDto);
+      return this.findOneByEmail(email);
     }
   }
 

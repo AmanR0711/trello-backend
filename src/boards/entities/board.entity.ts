@@ -21,7 +21,6 @@ export enum TrelloBoardBackgroundColor {
   AMBER = 'amber',
   YELLOW = 'yellow',
   LIME = 'lime',
-  LIME_ACCENT = 'lime-accent',
   LIGHT_GREEN = 'light-green',
   GREEN = 'green',
   TEAL = 'teal',
@@ -29,6 +28,7 @@ export enum TrelloBoardBackgroundColor {
   LIGHT_BLUE = 'light-blue',
   BLUE = 'blue',
   INDIGO = 'indigo',
+  PURPLE = 'purple',
   DEEP_PURPLE = 'deep-purple',
   BLUE_GREY = 'blue-grey',
   BROWN = 'brown',
@@ -63,7 +63,7 @@ export class TrelloBoard {
 
   // Creator of the board
   // One user can create multiple boards
-  @ManyToOne(() => TrelloUser, (user) => user.boards, { eager: true })
+  @ManyToOne(() => TrelloUser, (user) => user.boards, { eager: true, onDelete: 'CASCADE'})
   creator: TrelloUser;
 
   @OneToMany((type) => TrelloBoardScopes, (scope) => scope.board)
