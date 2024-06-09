@@ -60,7 +60,6 @@ export class BoardsService {
   async findOne(id: string) {
     const res = await this.boardRepository.findOne({
       where: { id: id },
-      relations: { creator: true, scopes: true },
     });
 
     // Invalid board id

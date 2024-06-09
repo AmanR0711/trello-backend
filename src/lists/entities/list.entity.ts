@@ -1,6 +1,7 @@
 import { TrelloBoard } from "src/boards/entities/board.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TrelloListScopes } from "./scopes.entity";
+import { TrelloTask } from "src/tasks/entities/task.entity";
 
 // A List of Tasks in a Trello Board
 @Entity()
@@ -10,7 +11,7 @@ export class TrelloList {
     id: number;
 
     // Name of the List
-    @Column()
+    @Column({ default: 'Untitled List' })
     name: string;
 
     // Description of the List
@@ -30,4 +31,8 @@ export class TrelloList {
     // Created At
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)'})
     createdAt: Date;
+    
+    // Tasks in this List
+    @OneToMany(() => TrelloTask, task => task.list)
+    tasks: TrelloTask[];
 }

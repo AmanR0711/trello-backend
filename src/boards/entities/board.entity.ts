@@ -70,6 +70,6 @@ export class TrelloBoard {
   scopes: TrelloBoardScopes[];
 
   // A board can have many lists
-  @OneToMany(() => TrelloList, (list) => list.board, { eager: true })
+  @OneToMany(() => TrelloList, (list) => list.board, { onDelete: 'CASCADE'})
   lists: TrelloList[];
 }

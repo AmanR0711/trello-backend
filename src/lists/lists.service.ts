@@ -41,13 +41,13 @@ export class ListsService {
   }
 
   async findOne(boardId: string, id: number) {
-    const list = await this.listsRepository.findOne({
+    const list = await this.listsRepository.find({
       where: { id, board: { id: boardId } },
     });
     if (!list) {
       throw new NotFoundException('List not found');
     }
-    return list;
+    return list[0];
   }
 
   async update(boardId: string, id: number, updateListDto: UpdateListDto) {
