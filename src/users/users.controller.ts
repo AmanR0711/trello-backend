@@ -42,7 +42,7 @@ export class UsersController {
 
     // if no avatarUrl -> set to default
     if (!createUserDto.avatarUrl) {
-      createUserDto.avatarUrl = `${this.configService.get<string>('SERVER_URL')}/public/avatar/default.jpg`;
+      createUserDto.avatarUrl = `${this.configService.get<string>('SERVER_URL')}public/avatars/default.jpeg`;
     }
 
     return await this.usersService.create(createUserDto);
