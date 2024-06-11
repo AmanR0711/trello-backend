@@ -16,21 +16,21 @@ import { TrelloList } from 'src/lists/entities/list.entity';
 export enum TrelloBoardBackgroundColor {
   RED = 'red',
   PINK = 'pink',
-  DEEP_ORANGE = 'deep-orange',
+  DEEP_ORANGE = 'deep_orange',
   ORANGE = 'orange',
   AMBER = 'amber',
   YELLOW = 'yellow',
   LIME = 'lime',
-  LIGHT_GREEN = 'light-green',
+  LIGHT_GREEN = 'light_green',
   GREEN = 'green',
   TEAL = 'teal',
   CYAN = 'cyan',
-  LIGHT_BLUE = 'light-blue',
+  LIGHT_BLUE = 'light_blue',
   BLUE = 'blue',
   INDIGO = 'indigo',
   PURPLE = 'purple',
-  DEEP_PURPLE = 'deep-purple',
-  BLUE_GREY = 'blue-grey',
+  DEEP_PURPLE = 'deep_purple',
+  BLUE_GREY = 'blue_grey',
   BROWN = 'brown',
   GREY = 'grey',
   BLACK = 'black',
@@ -66,7 +66,7 @@ export class TrelloBoard {
   @ManyToOne(() => TrelloUser, (user) => user.boards, { eager: true, onDelete: 'CASCADE'})
   creator: TrelloUser;
 
-  @OneToMany((type) => TrelloBoardScopes, (scope) => scope.board)
+  @OneToMany((type) => TrelloBoardScopes, (scope) => scope.board, { eager: true })
   scopes: TrelloBoardScopes[];
 
   // A board can have many lists

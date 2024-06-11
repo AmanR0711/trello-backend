@@ -50,10 +50,8 @@ export class BoardsService {
   async findAll(username: string) {
     const res = await this.boardRepository.find({
       where: { creator: { username } },
-      relations: { creator: true, scopes: true },
+      relations: { creator: true },
     });
-
-    console.log(res);
     return res;
   }
 

@@ -88,13 +88,14 @@ export class UsersController {
       storage: diskStorage({
         destination: './public/avatars',
         filename: (req, file, callback) => {
-          if (!req.query.username) {
-            callback(new Error('Username is required'), '');
+          if (!req.query.email) {
+            callback(new Error('Email is required'), '');
           } else {
+            console.log("Yelo avatar: " + file.mimetype + " " + file.size);
             if (file.mimetype.match(/image\/(png|jpeg|jpg)/)) {
               // Filename: username + file extension
               // e.g. 'john_doe.png'
-              const filename: string = `${req.query.username}.${file.originalname.split('.').pop()}`;
+              const filename: string = `${req.query.email}.${file.originalname.split('.').pop()}`;
               callback(null, filename);
             } else {
               callback(new Error('Invalid file type'), '');
@@ -107,20 +108,20 @@ export class UsersController {
   async uploadAvatar(
     @UploadedFile(
       // Max file size: 5MB,
-      // Allowed file types: JPEG, JPG, PNG
+      // Allowed file types: JPEG, JPG
       new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: '.(png|jpeg|jpg)' })
+        .addFileTypeValidator({ fileType: '.(jpeg|jpg)' })
         .addMaxSizeValidator({ maxSize: 5 * 1024 * 1024 })
         .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
     )
     avatar: Express.Multer.File,
-    @Query('username') username: string,
+    @Query('email') email: string,
   ) {
-    const validUsername = await this.usersService.findOne(username);
-    if (!validUsername) {
+    const validEmail = await this.usersService.findOneByEmail(email);
+    if (!validEmail) {
       throw new NotFoundException({ message: 'Invalid username' });
     } else {
-      await this.usersService.update(username, {
+      await this.usersService.update(email, {
         avatarUrl: `${this.configService.get<string>('SERVER_URL')}/public/avatars/${avatar.filename}`,
       });
       return this.usersService.uploadAvatar(avatar);

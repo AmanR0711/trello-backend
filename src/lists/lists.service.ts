@@ -35,9 +35,11 @@ export class ListsService {
   }
 
   async findAll(boardId: string) {
-    return await this.listsRepository.find({
+    const all = await this.listsRepository.find({
       where: { board: { id: boardId } },
     });
+    console.log(all);
+    return all;
   }
 
   async findOne(boardId: string, id: number) {

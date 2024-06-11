@@ -20,12 +20,12 @@ export class TrelloList {
 
     // Board ID to which the List belongs
     // One board can have many lists
-    @ManyToOne(() => TrelloBoard, board => board.lists)
+    @ManyToOne(() => TrelloBoard, board => board.lists, { onDelete: 'CASCADE' })
     board: TrelloBoard;
 
     // List-wise read/write scope
     // One list can have many users' scopes
-    @OneToMany(() => TrelloListScopes, scope => scope.list)
+    @OneToMany(() => TrelloListScopes, scope => scope.list, { eager: true })
     scopes: TrelloListScopes[];
 
     // Created At

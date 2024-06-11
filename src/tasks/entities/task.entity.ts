@@ -20,6 +20,6 @@ export class TrelloTask {
 
     // Which list this task belongs to
     // Many tasks can belong to one list
-    @ManyToOne(() => TrelloList, list => list.tasks)
+    @ManyToOne(() => TrelloList, list => list.tasks, { onDelete: 'CASCADE' })
     list: TrelloList;
 }
